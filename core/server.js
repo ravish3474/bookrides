@@ -7,11 +7,12 @@ var httpMsgs = require("./httpMsgs");
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const supplierRoutes = require('../api/routes/suppliers');
+const vehicleRoutes = require('../api/routes/vehicles');
+const locationRoutes = require('../api/routes/location');
 var fs = require('fs');
 var path = require('path');
 
 const http = require('http');
-//const app = require('./app');
 
 const port = process.env.PORT || 3000;
 
@@ -47,6 +48,8 @@ app.get('/uploads/:file', function (req, res){
 // })
 
 app.use('/suppliers', supplierRoutes);
+app.use('/vehicles', vehicleRoutes);
+app.use('/location', locationRoutes);
 
 // app.use((req, res, next)=>{
 //     console.log(req.url);
