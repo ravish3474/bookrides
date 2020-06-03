@@ -84,7 +84,7 @@ router.post('/login_supplier',upload.none(), (req, res, next)=>{
     const formData = req.body;
     console.log(formData);
     var mobile = formData.mobile_number;
-    db.executeSql("SELECT * FROM suppliers WHERE mobile_number=" + mobile,function(data,err){
+    db.executeSql("SELECT * FROM suppliers WHERE mobile_number="+mobile+" AND supplier_status='1'",function(data,err){
         if(err){
             res.status(500).json({
                 status:'0',
