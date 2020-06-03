@@ -34,7 +34,7 @@ router.post('/fetch_vehicle_models_by_brand',upload.none(), (req, res, next)=>{
                 if(data.rowsAffected[0]!=0){
                     res.status(200).json({
                         status:'1',
-                        msg:data.recordsets,
+                        msg:data.recordsets[0],
                     })
                 }
                 else{
@@ -58,7 +58,7 @@ router.get('/fetch_vehicle_brands', (req, res, next)=>{
         else{
             res.status(200).json({
                 status:'1',
-                msg:data.recordsets,
+                msg:data.recordsets[0],
             })
             }
     })

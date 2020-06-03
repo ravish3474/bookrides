@@ -26,7 +26,7 @@ var storage = multer.diskStorage({
         else{
             res.status(200).json({
                 status:'1',
-                msg:data.recordsets,
+                msg:data.recordsets[0],
             })
             }
     })
