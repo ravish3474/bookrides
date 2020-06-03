@@ -98,7 +98,7 @@ router.post('/login_supplier',upload.none(), (req, res, next)=>{
                     smsClient.sendPartnerWelcomeMessage(user);
                     res.status(200).json({
                         status:'1',
-                        msg:data.recordsets,
+                        msg:data.recordsets[0],
                         otp:otp
                     })
                 }
