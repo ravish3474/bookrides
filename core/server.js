@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 const supplierRoutes = require('../api/routes/suppliers');
 const vehicleRoutes = require('../api/routes/vehicles');
 const locationRoutes = require('../api/routes/location');
+const inventoryRoutes = require('../api/routes/inventory');
 var fs = require('fs');
 var path = require('path');
 
@@ -22,10 +23,11 @@ server.listen(port);
 
 const router = express.Router();
 
-app.get('/uploads/:file', function (req, res){
+app.get('/uploads/:folder/:file', function (req, res){
     file = req.params.file;
+    folder = req.params.folder;
     let reqPath = path.join(__dirname, '../');
-    var img = fs.readFileSync(reqPath + "uploads/" + file);
+    var img = fs.readFileSync(reqPath + "uploads/" + folder + "/" +file);
     res.writeHead(200, {'Content-Type': 'image/jpg' });
     res.end(img, 'binary');
   });
@@ -50,6 +52,7 @@ app.get('/uploads/:file', function (req, res){
 app.use('/suppliers', supplierRoutes);
 app.use('/vehicles', vehicleRoutes);
 app.use('/location', locationRoutes);
+app.use('/inventory',inventoryRoutes);
 
 // app.use((req, res, next)=>{
 //     console.log(req.url);
