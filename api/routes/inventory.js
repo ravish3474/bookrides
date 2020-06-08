@@ -4,6 +4,9 @@ const express = require('express');
 const app = express();
 var util = require("util");
 const router = express.Router();
+var bodyParser = require('body-parser');
+app.use(bodyParser.json({limit: "50mb"}));
+app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 const multer = require('multer');
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
