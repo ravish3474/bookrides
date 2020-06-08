@@ -16,7 +16,7 @@ var storage = multer.diskStorage({
       cb(null, Date.now() + '.jpg') //Appending .jpg
     }
   })
-var upload = multer({ storage: storage,limits: { fileSize: maxSize } });
+var upload = multer({ storage: storage });
 
 router.get('/', (req, res, next)=>{
     res.status(200).json({
