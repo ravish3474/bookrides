@@ -5,11 +5,14 @@ var emp = require("../controllers/employee");
 var settings = require("../settings");
 var httpMsgs = require("./httpMsgs");
 const morgan = require('morgan');
-const bodyParser = require('body-parser');
 const supplierRoutes = require('../api/routes/suppliers');
 const vehicleRoutes = require('../api/routes/vehicles');
 const locationRoutes = require('../api/routes/location');
 const inventoryRoutes = require('../api/routes/inventory');
+var bodyParser = require('body-parser');
+app.use(bodyParser.json({limit: "50mb"}));
+app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
+
 var fs = require('fs');
 var path = require('path');
 
