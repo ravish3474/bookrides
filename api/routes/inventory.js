@@ -71,7 +71,7 @@ router.post('/getAllVehicleList',upload.none(),(req, res, next)=>{
                 else{
                     res.status(500).json({
                         status:'0',
-                        msg:'Registration number not found'
+                        msg:'Supplier not found'
                     })
                 }
             }
