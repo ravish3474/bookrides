@@ -24,6 +24,60 @@ router.get('/', (req, res, next)=>{
     });
 });
 
+router.post('/getVehicleStatus',upload.none(),(req, res, next)=>{
+    const formData = req.body;
+    var check_sql="SELECT * FROM vehicle_list JOIN vehicle_models ON vehicle_models.model_id=vehicle_list.vehicleModel JOIN vehicle_brands ON vehicle_brands.brand_id=vehicle_list.vehicleBrand WHERE vehicle_list.reg_number='"+formData.reg_num+"'";
+    db.executeSql(check_sql,function(data,err){
+        if(err){
+            res.status(500).json({
+                status:'0',
+                msg:err
+            })
+        }
+        else{
+                if(data.rowsAffected[0]!=0){
+                    res.status(200).json({
+                        status:'1',
+                        msg:data.recordsets[0],
+                    })
+                }
+                else{
+                    res.status(500).json({
+                        status:'0',
+                        msg:'Registration number not found'
+                    })
+                }
+            }
+    })
+});
+
+router.post('/getAllVehicleList',upload.none(),(req, res, next)=>{
+    const formData = req.body;
+    var check_sql="SELECT * FROM vehicle_list JOIN vehicle_models ON vehicle_models.model_id=vehicle_list.vehicleModel JOIN vehicle_brands ON vehicle_brands.brand_id=vehicle_list.vehicleBrand WHERE vehicle_list.supplier_id='"+formData.supplier_id+"'";
+    db.executeSql(check_sql,function(data,err){
+        if(err){
+            res.status(500).json({
+                status:'0',
+                msg:err
+            })
+        }
+        else{
+                if(data.rowsAffected[0]!=0){
+                    res.status(200).json({
+                        status:'1',
+                        msg:data.recordsets[0],
+                    })
+                }
+                else{
+                    res.status(500).json({
+                        status:'0',
+                        msg:'Registration number not found'
+                    })
+                }
+            }
+    })
+});
+
 router.post('/add_vehicle',upload.any(), (req, res, next)=>{
     var filename = req.files;
     const formData = req.body;
