@@ -28,7 +28,7 @@ router.get('/', (req, res, next)=>{
 });
 
 router.post('/add_supplier',upload.single('photo'), (req, res, next)=>{
-    console.log('form data', formData);
+    //console.log('form data', formData);
     var filename = req.file.filename;
     const formData = req.body;
     console.log('form data', formData);
