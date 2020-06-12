@@ -7,7 +7,7 @@ const router = express.Router();
 const multer = require('multer');
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'uploads/suppliers/')
+      cb(null, './uploads/suppliers/')
     },
     filename: function (req, file, cb) {
       cb(null, Date.now() + '.jpg') //Appending .jpg
@@ -28,6 +28,7 @@ router.get('/', (req, res, next)=>{
 });
 
 router.post('/add_supplier',upload.single('photo'), (req, res, next)=>{
+    console.log('form data', formData);
     var filename = req.file.filename;
     const formData = req.body;
     console.log('form data', formData);
