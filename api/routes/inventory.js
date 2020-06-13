@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:500
 const multer = require('multer');
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'uploads/inventory/')
+      cb(null, './uploads/inventory/')
     },
     filename: function (req, file, cb) {
       cb(null, Date.now() + '.jpg') //Appending .jpg
