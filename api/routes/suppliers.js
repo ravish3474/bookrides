@@ -36,7 +36,8 @@ router.post('/add_supplier',upload.single('photo'), (req, res, next)=>{
         if(!formData) throw new Error("Input Not valid");
         // //var data = JSON.parse(reqBody);
         if(formData){
-            db.executeSql("SELECT * FROM suppliers WHERE email='"+formData.email+"' OR mobile_number="+formData.mobile_number,function(data,err){
+            var checksql="SELECT * FROM suppliers WHERE email='"+formData.email+"' OR mobile_number='"+formData.mobile_number+"'";
+            db.executeSql(checksql,function(data,err){
                 if(err){
                     res.status(500).json({
                         status:'0',
