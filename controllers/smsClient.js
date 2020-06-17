@@ -9,6 +9,28 @@ const tlClient = axios.create({
 });
 
 const smsClient = {
+  sendUserWelcomeMessage: user => {
+    var msg = `Your One Time Bookrides Password (OTP) is : `+user.otp+`
+
+- Team Bookrides
+POWERED BY VISION TECHNOSOFT`;
+    var url = 'https://api.textlocal.in/send/?apikey=HkNBwMF5ewE-LhwklzHjxndC2yb71t1q4WsdROp4Hx&numbers=91'+user.phone+'&sender=VISION&message='+encodeURIComponent(msg);
+    // Make a request for a user with a given ID
+    axios.get(url)
+    .then(function (response) {
+    // handle success
+    console.log("------ SMS Gateway Response ------");
+    console.log(response.data);
+    })
+    .catch(function (error) {
+    // handle error
+    console.log(error);
+    })
+    .finally(function () {
+
+    });   
+  },
+
   sendPartnerWelcomeMessage: user => {
     var msg = `Your OTP for login into bookrides supplier account is : `+user.otp+`
 -BookRides`;

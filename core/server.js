@@ -9,6 +9,7 @@ const supplierRoutes = require('../api/routes/suppliers');
 const vehicleRoutes = require('../api/routes/vehicles');
 const locationRoutes = require('../api/routes/location');
 const inventoryRoutes = require('../api/routes/inventory');
+const userRoutes = require('../api/routes/users');
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: '50mb'}));
 
@@ -56,6 +57,7 @@ app.use('/suppliers', supplierRoutes);
 app.use('/vehicles', vehicleRoutes);
 app.use('/location', locationRoutes);
 app.use('/inventory',inventoryRoutes);
+app.use('/users',userRoutes);
 
 // app.use((req, res, next)=>{
 //     console.log(req.url);

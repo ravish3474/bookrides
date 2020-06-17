@@ -45,7 +45,6 @@ router.post('/add_supplier',upload.single('photo'), (req, res, next)=>{
                     })
                 }
                 else{
-                    console.log(data.rowsAffected[0]);
                     if(data.rowsAffected[0]!=0){
                         res.status(500).json({
                             status:'0',
@@ -84,7 +83,6 @@ router.post('/add_supplier',upload.single('photo'), (req, res, next)=>{
 
 router.post('/login_supplier',upload.none(), (req, res, next)=>{
     const formData = req.body;
-    console.log(formData);
     var mobile = formData.mobile_number;
     db.executeSql("SELECT * FROM suppliers WHERE mobile_number="+mobile+" AND supplier_status='1'",function(data,err){
         if(err){
