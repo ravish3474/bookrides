@@ -52,8 +52,8 @@ router.post('/add_supplier',upload.single('photo'), (req, res, next)=>{
                         })
                     }
                     else{
-                        var sql = "INSERT INTO suppliers(first_name,last_name,email,company_name,gst_number,mobile_number,photo,address,location_id) VALUES ";
-                        sql+= util.format("('%s','%s','%s','%s','%s','%s','%s','%s','%s')",formData.first_name,formData.last_name,formData.email,formData.company_name,formData.gst_number,formData.mobile_number,filename,formData.address,formData.location_id);
+                        var sql = "INSERT INTO suppliers(first_name,last_name,email,company_name,gst_number,mobile_number,photo,address,location_id,latitude,longitude) VALUES ";
+                        sql+= util.format("('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",formData.first_name,formData.last_name,formData.email,formData.company_name,formData.gst_number,formData.mobile_number,filename,formData.address,formData.location_id,formData.latitude,formData.longitude);
                         db.executeSql(sql,function(data,err){
                             if(err){
                                 res.status(500).json({
