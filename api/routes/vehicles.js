@@ -23,7 +23,8 @@ router.get('/', (req, res, next)=>{
 
 router.post('/fetch_vehicle_models_by_brand',upload.none(), (req, res, next)=>{
     const formData = req.body;
-    db.executeSql("SELECT * FROM vehicle_models WHERE brand_id=" + formData.brand_id,function(data,err){
+    var sql="EXEC fetch_vehicle_models_by_brand @brand_id='"+formData.brand_id+"'";
+    db.executeSql(sql,function(data,err){
         if(err){
             res.status(500).json({
                 status:'0',
@@ -48,7 +49,7 @@ router.post('/fetch_vehicle_models_by_brand',upload.none(), (req, res, next)=>{
 });
 
 router.get('/fetch_vehicle_brands', (req, res, next)=>{
-    db.executeSql("SELECT * FROM vehicle_brands",function(data,err){
+    db.executeSql("EXEC select_query_all @tbl='vehicle_brands'",function(data,err){
         if(err){
             res.status(500).json({
                 status:'0',
@@ -72,7 +73,8 @@ router.post('/add_vehicle_model',upload.single('photo'), (req, res, next)=>{
         if(!formData) throw new Error("Input Not valid");
         // //var data = JSON.parse(reqBody);
         if(formData){
-            db.executeSql("SELECT * FROM vehicle_models WHERE model_name='"+formData.model_name+"' AND brand_id="+formData.brand_id,function(data,err){
+            var sql="EXEC add_vehicle_model @model_name='"+formData.model_name+"',brand_id='"+formData.brand_id+"'";
+            db.executeSql(sql,function(data,err){
                 if(err){
                     res.status(500).json({
                         status:'0',
@@ -87,8 +89,7 @@ router.post('/add_vehicle_model',upload.single('photo'), (req, res, next)=>{
                         })
                     }
                     else{
-                        var sql = "INSERT INTO vehicle_models(brand_id,model_name,model_image) VALUES ";
-                        sql+= util.format("('%d','%s','%s')",formData.brand_id,formData.model_name,filename);
+                        var sql = "EXEC insert_vehicle_model @brand_id='"+formData.brand_id+"', @model_name='"+formData.model_name+"',@model_image='"+filename+"'";
                         db.executeSql(sql,function(data,err){
                             if(err){
                                 res.status(500).json({
@@ -122,7 +123,7 @@ router.post('/add_vehicle_brand',upload.none(),(req, res, next)=>{
         if(!formData) throw new Error("Input Not valid");
         // //var data = JSON.parse(reqBody);
         if(formData){
-            var check_sql="SELECT * FROM vehicle_brands WHERE brand_name='"+formData.brand_name+"'";
+            var check_sql="EXEC fetch_vehicle_by_brand @brand_name='"+formData.brand_name+"'";
             db.executeSql(check_sql,function(data,err){
                 if(err){
                     res.status(500).json({
@@ -138,8 +139,7 @@ router.post('/add_vehicle_brand',upload.none(),(req, res, next)=>{
                         })
                     }
                     else{
-                        var sql = "INSERT INTO vehicle_brands(brand_name) VALUES ";
-                        sql+= util.format("('%s')",formData.brand_name);
+                        var sql = "EXEC insert_vehicle_brand @brand_name='"+formData.brand_name+"'";
                         db.executeSql(sql,function(data,err){
                             if(err){
                                 res.status(500).json({

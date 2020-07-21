@@ -36,7 +36,7 @@ router.post('/add_supplier',upload.single('photo'), (req, res, next)=>{
         if(!formData) throw new Error("Input Not valid");
         // //var data = JSON.parse(reqBody);
         if(formData){
-            var checksql="SELECT * FROM suppliers WHERE email='"+formData.email+"' OR mobile_number='"+formData.mobile_number+"'";
+            var checksql="EXEC check_supplier @email = '"+formData.email+"', @mobile_number = '"+formData.mobile_number+"'";
             db.executeSql(checksql,function(data,err){
                 if(err){
                     res.status(500).json({
@@ -52,8 +52,7 @@ router.post('/add_supplier',upload.single('photo'), (req, res, next)=>{
                         })
                     }
                     else{
-                        var sql = "INSERT INTO suppliers(first_name,last_name,email,company_name,gst_number,mobile_number,photo,address,location_id,latitude,longitude) VALUES ";
-                        sql+= util.format("('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",formData.first_name,formData.last_name,formData.email,formData.company_name,formData.gst_number,formData.mobile_number,filename,formData.address,formData.location_id,formData.latitude,formData.longitude);
+                        var sql="EXEC add_supplier @first_name = '"+formData.first_name+"', @last_name = '"+formData.last_name+"',@email='"+formData.email+"',@company_name='"+formData.company_name+"',@gst_number='"+formData.gst_number+"',@mobile_number='"+formData.mobile_number+"',@photo='"+formData.filename+"',@address='"+formData.address+"',@location_id='"+formData.location_id+"',@latitude='"+formData.latitude+"',@longitude='"+formData.longitude+"',@opening_time='"+formData.opening_time+"',@closing_time='"+formData.closing_time+"'";
                         db.executeSql(sql,function(data,err){
                             if(err){
                                 res.status(500).json({
@@ -84,7 +83,7 @@ router.post('/add_supplier',upload.single('photo'), (req, res, next)=>{
 router.post('/login_supplier',upload.none(), (req, res, next)=>{
     const formData = req.body;
     var mobile = formData.mobile_number;
-    var nsql = "SELECT * FROM suppliers WHERE mobile_number='"+mobile+"' AND supplier_status='1'";
+    var nsql = "exec login_supplier @mobile='"+mobile+"'";
     db.executeSql(nsql,function(data,err){
         if(err){
             res.status(500).json({

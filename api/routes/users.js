@@ -26,7 +26,7 @@ router.post('/update-profile',upload.none(),(req, res, next)=>{
     const last_name = formData.last_name;
     const email = formData.email;
     const user_id = formData.user_id;
-    var checksql="SELECT * FROM users WHERE email='"+email+"'";
+    var checksql="EXEC check_user @email='"+email+"'";
     db.executeSql(checksql,function(data,err){
         if(err){
             res.status(500).json({
@@ -42,7 +42,7 @@ router.post('/update-profile',upload.none(),(req, res, next)=>{
         })
     }
     else{
-    var sql="UPDATE users SET first_name='"+first_name+"', last_name='"+last_name+"',email='"+email+"' WHERE user_id='"+user_id+"'";
+    var sql="EXEC update_user @first_name='"+first_name+"', @last_name='"+last_name+"',@email='"+email+"',@user_id='"+user_id+"'";
     db.executeSql(sql,function(data,err){
         if(err){
             res.status(500).json({
@@ -50,7 +50,7 @@ router.post('/update-profile',upload.none(),(req, res, next)=>{
                 msg:'Error Occured'
             })
         }else{
-            var nsql="SELECT * FROM users WHERE user_id='"+user_id+"'";
+            var nsql="EXEC check_user_by_id @user_id='"+user_id+"'";
             db.executeSql(nsql,function(data,err){
                 if(err){
                     res.status(500).json({
@@ -84,7 +84,7 @@ router.post('/login',upload.none(),(req, res, next)=>{
     const formData = req.body;
     var mobile = formData.mobile_number;
     var otp = Math.floor(Math.random() * (999999 - 111111)) + 111111;
-    var nsql="SELECT * FROM users WHERE mobile='"+mobile+"'";
+    var nsql="EXEC login_mobile @mobile='"+mobile+"'";
     db.executeSql(nsql,function(data,err){
         if(err){
             res.status(500).json({
@@ -105,9 +105,7 @@ router.post('/login',upload.none(),(req, res, next)=>{
                     })
                 }
                 else{
-                    var sql = "INSERT INTO users(mobile) VALUES ";
-                    sql+= util.format("('%s')",mobile);
-                    sql+="SELECT SCOPE_IDENTITY() AS ID";
+                    var sql = "EXEC create_user @mobile='"+mobile+"'";
                     db.executeSql(sql,function(data,err){
                         if(err){
                             res.status(500).json({

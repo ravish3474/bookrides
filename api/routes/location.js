@@ -16,7 +16,7 @@ var storage = multer.diskStorage({
   var upload = multer({ storage: storage });
 
   router.get('/fetch_locations', (req, res, next)=>{
-    db.executeSql("SELECT * FROM location_master",function(data,err){
+    db.executeSql("EXEC select_query_all @tbl='location_master'",function(data,err){
         if(err){
             res.status(500).json({
                 status:'0',
@@ -38,7 +38,7 @@ var storage = multer.diskStorage({
         if(!formData) throw new Error("Input Not valid");
         // //var data = JSON.parse(reqBody);
         if(formData){
-            var check_sql="SELECT * FROM location_master WHERE location_name='"+formData.location_name+"'";
+            var check_sql="EXEC check_location @location_name='"+formData.location_name+"'";
             db.executeSql(check_sql,function(data,err){
                 if(err){
                     res.status(500).json({
@@ -54,8 +54,7 @@ var storage = multer.diskStorage({
                         })
                     }
                     else{
-                        var sql = "INSERT INTO location_master(location_name) VALUES ";
-                        sql+= util.format("('%s')",formData.location_name);
+                        var sql = "EXEC insert_location @location_name='"+formData.location_name+"'";
                         db.executeSql(sql,function(data,err){
                             if(err){
                                 res.status(500).json({

@@ -29,8 +29,7 @@ router.post('/vehicleDocUpdate',upload.any(), (req, res, next)=>{
     const formData = req.body;
     var vehicle_id = formData.vehicle_id;
     filename.forEach(element => {
-        var sql = "INSERT INTO vehicle_documents(vehicle_id,document_photo) VALUES ";
-        sql+= util.format("('%d','%s')",vehicle_id,element.filename);
+        var sql = "EXEC vehicleDocumentsUpdate @vehicle_id='"+vehicle_id+"',@document_photo='"+element.filename+"'";
         db.executeSql(sql,function(data,err){});
     });
     res.status(200).json({
@@ -41,7 +40,7 @@ router.post('/vehicleDocUpdate',upload.any(), (req, res, next)=>{
 
 router.post('/getVehicleStatus',upload.none(),(req, res, next)=>{
     const formData = req.body;
-    var check_sql="SELECT * FROM vehicle_list JOIN vehicle_models ON vehicle_models.model_id=vehicle_list.vehicleModel JOIN vehicle_brands ON vehicle_brands.brand_id=vehicle_list.vehicleBrand WHERE vehicle_list.reg_number='"+formData.reg_num+"'";
+    var check_sql="EXEC getVehicleStatus @reg_num = '"+formData.reg_num+"'";
     db.executeSql(check_sql,function(data,err){
         if(err){
             res.status(500).json({
@@ -53,8 +52,7 @@ router.post('/getVehicleStatus',upload.none(),(req, res, next)=>{
                 if(data.rowsAffected[0]!=0){
                     var whole_data = data.recordsets[0];
                     var vehicle_id= whole_data[0].vehicle_id;
-                    console.log(vehicle_id);
-                    var check_sql="SELECT * FROM vehicle_documents WHERE vehicle_id='"+vehicle_id+"'";
+                    var check_sql="EXEC vehicleDocuments @vehicle_id='"+vehicle_id+"'";
                     db.executeSql(check_sql,function(data,err){
                     if(!err){
                         res.status(200).json({
@@ -77,7 +75,7 @@ router.post('/getVehicleStatus',upload.none(),(req, res, next)=>{
 
 router.post('/getAllVehicleList',upload.none(),(req, res, next)=>{
     const formData = req.body;
-    var check_sql="SELECT * FROM vehicle_list JOIN vehicle_models ON vehicle_models.model_id=vehicle_list.vehicleModel JOIN vehicle_brands ON vehicle_brands.brand_id=vehicle_list.vehicleBrand WHERE vehicle_list.supplier_id='"+formData.supplier_id+"'";
+    var check_sql="EXEC getAllVehicleList @supplier_id='"+formData.supplier_id+"'";
     db.executeSql(check_sql,function(data,err){
         if(err){
             res.status(500).json({
@@ -114,7 +112,7 @@ router.post('/add_vehicle',upload.any(), (req, res, next)=>{
         if(!formData) throw new Error("Input Not valid");
         // //var data = JSON.parse(reqBody);
         if(formData){
-            var check_sql="SELECT * FROM vehicle_list WHERE reg_number='"+formData.reg_number+"'";
+            var check_sql="EXEC check_vehicle @reg_number='"+formData.reg_number+"'";
             db.executeSql(check_sql,function(data,err){
                 if(err){
                     res.status(500).json({
@@ -130,9 +128,7 @@ router.post('/add_vehicle',upload.any(), (req, res, next)=>{
                         })
                     }
                     else{
-                        var sql = "INSERT INTO vehicle_list(supplier_id,vehicleBrand,vehicleModel,reg_number,insurance_exp_date,puc_exp_date) VALUES ";
-                        sql+= util.format("('%d','%d','%d','%s','%s','%s')",formData.supplier_id,formData.vehicleBrand,formData.vehicleModel,formData.reg_number,formData.insurance_exp_date,formData.puc_exp_date);
-                        sql+="SELECT SCOPE_IDENTITY() AS ID";
+                        var sql = "EXEC add_vehicle @supplier_id='"+formData.supplier_id+"', @vehicleBrand='"+formData.vehicleBrand+"', @vehicleModel='"+formData.vehicleModel+"', @reg_number='"+formData.reg_number+"', @insurance_exp_date='"+formData.insurance_exp_date+"', @puc_exp_date='"+formData.puc_exp_date+"'";
                         db.executeSql(sql,function(data,err){
                             if(err){
                                 res.status(500).json({
@@ -142,8 +138,7 @@ router.post('/add_vehicle',upload.any(), (req, res, next)=>{
                             }else{
                                 var last_id = data.recordsets[0][0].ID;
                                 filename.forEach(element => {
-                                    var sql = "INSERT INTO vehicle_documents(vehicle_id,document_photo) VALUES ";
-                                    sql+= util.format("('%d','%s')",last_id,element.filename);
+                                    var sql = "EXEC vehicleDocumentsUpdate @vehicle_id='"+last_id+"',@document_photo='"+element.filename+"'";
                                     db.executeSql(sql,function(data,err){});
                                 });
                                 res.status(200).json({
