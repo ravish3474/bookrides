@@ -9,6 +9,7 @@ const vehicleRoutes = require('../api/routes/vehicles');
 const locationRoutes = require('../api/routes/location');
 const inventoryRoutes = require('../api/routes/inventory');
 const userRoutes = require('../api/routes/users');
+const bookingRoutes = require('../api/routes/bookings');
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: '50mb'}));
 
@@ -40,6 +41,7 @@ app.use('/vehicles', vehicleRoutes);
 app.use('/location', locationRoutes);
 app.use('/inventory',inventoryRoutes);
 app.use('/users',userRoutes);
+app.use('/bookings',bookingRoutes);
 
 app.use((req, res, next)=>{
     const error = new Error('Not Found');

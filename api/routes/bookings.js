@@ -1,4 +1,4 @@
-const inventoryController = require('../../controllers/inventoryController');
+const bookingController = require('../../controllers/bookingController');
 const express = require('express');
 const app = express();
 const router = express.Router();
@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:500
 const multer = require('multer');
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, './uploads/inventory/')
+      cb(null, './uploads/')
     },
     filename: function (req, file, cb) {
       cb(null, Date.now() + '.jpg') //Appending .jpg
@@ -16,14 +16,6 @@ var storage = multer.diskStorage({
   })
 var upload = multer({ storage: storage });
 
-router.get('/',inventoryController.check);
-
-router.post('/vehicleDocUpdate',upload.any(),inventoryController.vehicleDocUpdate);
-
-router.post('/getVehicleStatus',upload.none(),inventoryController.getVehicleStatus);
-
-router.post('/getAllVehicleList',upload.none(),inventoryController.getAllVehicleList);
-
-router.post('/add_vehicle',upload.any(),inventoryController.add_vehicle);
+router.post('/checkAvailability',upload.none(),bookingController.check_availability);
 
 module.exports = router;

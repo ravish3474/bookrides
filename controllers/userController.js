@@ -1,20 +1,9 @@
-var util = require("util");
 var db = require("../core/db");
 const smsClient = require("./smsClient");
-const multer = require('multer');
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, './uploads/users/')
-    },
-    filename: function (req, file, cb) {
-      cb(null, Date.now() + '.jpg') //Appending .jpg
-    }
-  })
-var upload = multer({ storage: storage });
 
 exports.check=function(req,res,next){
     res.status(200).json({
-        message: 'working'
+        message: '/ to user'
     });
 };
 
