@@ -17,5 +17,6 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 router.post('/checkAvailability',upload.none(),bookingController.check_availability);
+router.post('/fetchSuppliersByModel',upload.none(),bookingController.fetchSuppliersByModel);
 
 module.exports = router;
