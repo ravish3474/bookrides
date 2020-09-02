@@ -1,5 +1,6 @@
 var db = require("../core/db");
 const smsClient = require("./smsClient");
+var sqlDb = require('mssql');
 
 exports.check=function(req,res,next){
     res.status(200).json({
@@ -65,6 +66,25 @@ exports.updateProfile=function(req, res, next){
     }}
 })
 }
+
+exports.userProfile=function(req,res,next){
+    const formData = req.body;
+    let sqlParams = [{ "name": "user_id", "type": sqlDb.VarChar, "value":formData.user_id }];
+    db.callProcedure(sqlParams, 'fetch_user_profile',function(data,err){
+        if(err){
+            res.status(500).json({
+                status:'0',
+                msg:err
+            })
+        }
+        else{
+            res.status(200).json({
+                status:'1',
+                msg:data.recordset,
+            })
+            }
+    })
+};
 
 exports.userLogin=function(req,res,next){
     const formData = req.body;

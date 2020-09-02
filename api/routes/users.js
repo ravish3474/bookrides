@@ -16,6 +16,8 @@ router.get('/',userController.check);
 
 router.post('/update-profile',upload.none(),userController.updateProfile);
 
+router.post('/fetch-profile',upload.none(),userController.userProfile)
+
 router.post('/login',upload.none(),userController.userLogin);
 
 module.exports = router;
