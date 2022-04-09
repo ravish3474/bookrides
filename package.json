@@ -14,7 +14,7 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.1.7-alpha.3",
     "http": "0.0.1-security",
-    "moment": "^2.27.0",
+    "moment": "^2.29.2",
     "morgan": "^1.10.0",
     "mssql": "^6.2.0",
     "multer": "^1.4.2",
